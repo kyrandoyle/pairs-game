@@ -1,13 +1,24 @@
 //Grab the information we need
 const section = document.querySelector("section");
 const playerLives = document.querySelector("span");
-let playerLivesCount = 6;
+let playerLivesCount = 11;
+const playerLivesEasy = 11;
+const playerLivesMedium = 8;
+const playerLivesHard = 5;
 const difficultyBtn = document.querySelectorAll(".difficulty-btn");
+//Sounds
 const backgroundMusic = document.querySelector(".background-music");
 const correctSound = document.querySelector(".correct-sound");
 const loseSound = document.querySelector(".lose-sound");
 const winSound = document.querySelector(".win-sound");
 const muteBtn = document.querySelector(".mute-music");
+const soundFx = document.querySelectorAll("audio");
+const playSounds = soundFx;
+//Modal box
+const modal = document.querySelector(".modal");
+const modalBtn = document.querySelector(".modalBtn");
+const closeModal = document.querySelector(".close");
+
 //Set Player Lives
 playerLives.textContent = playerLivesCount;
 
@@ -81,12 +92,6 @@ const checkCards = (e) => {
   //LOGIC
   // - Check if two cards are turned
   if (flippedCard.length === 2) {
-    //Disable turning other cards until check complete
-    // disableCards.forEach((card) => {
-    //   card.style.pointerEvents = "none";
-    //   setTimeout(() => (card.style.pointerEvents = "all"), 1500);
-    // });
-
     //Check if turned cards match
     if (
       flippedCard[0].getAttribute("name") ===
@@ -104,24 +109,59 @@ const checkCards = (e) => {
         card.classList.remove("flipped");
         setTimeout(() => card.classList.remove("toggleCard"), 1500);
       });
-      //disableCards.forEach((card) => (card.style.pointerEvents = "all"));
       //Reduce player Lives on incorrect guess
       playerLivesCount--;
       playerLives.innerText = playerLivesCount;
     }
   }
+  // Lose Game sequence
   if (playerLivesCount === 0) {
     loseSound.play();
     restart();
-    playerLivesCount = 6;
+
+    //Reset Player Lives to the correct amount as per difficulty level
+    difficultyBtn.forEach((btn) => {
+      if (btn.classList.contains("active")) {
+        const btnName = btn.getAttribute("name");
+        switch (btnName) {
+          case "easy":
+            playerLivesCount = playerLivesEasy;
+            break;
+          case "medium":
+            playerLivesCount = playerLivesMedium;
+            break;
+          case "hard":
+            playerLivesCount = playerLivesHard;
+            break;
+        }
+      }
+    });
     playerLives.innerText = playerLivesCount;
   }
+  //Win Game sequence
+
   if (toggleCard.length === 16) {
     winSound.play();
     setTimeout(() => {
       restart();
-      playerLivesCount = 6;
-      playerLives.innerText = PlayerLivesCount;
+      //Reset Player Lives to the correct amount as per difficulty level
+      difficultyBtn.forEach((btn) => {
+        if (btn.classList.contains("active")) {
+          const btnName = btn.getAttribute("name");
+          switch (btnName) {
+            case "easy":
+              playerLivesCount = playerLivesEasy;
+              break;
+            case "medium":
+              playerLivesCount = playerLivesMedium;
+              break;
+            case "hard":
+              playerLivesCount = playerLivesHard;
+              break;
+          }
+        }
+      });
+      playerLives.innerText = playerLivesCount;
     }, 3500);
   }
 };
@@ -148,21 +188,27 @@ const restart = () => {
 
 const changeDifficulty = (e) => {
   const difficultyIndex = e.target.name;
+  difficultyBtn.forEach((btn) => {
+    btn.classList.remove("active");
+  });
   switch (difficultyIndex) {
     case "easy":
       restart();
-      playerLivesCount = 11;
+      playerLivesCount = playerLivesEasy;
       playerLives.innerText = playerLivesCount;
+      e.target.classList.toggle("active");
       break;
     case "medium":
       restart();
-      playerLivesCount = 8;
+      playerLivesCount = playerLivesMedium;
       playerLives.innerText = playerLivesCount;
+      e.target.classList.toggle("active");
       break;
     case "hard":
       restart();
-      playerLivesCount = 5;
+      playerLivesCount = playerLivesHard;
       playerLives.innerText = playerLivesCount;
+      e.target.classList.toggle("active");
       break;
   }
 };
@@ -174,8 +220,18 @@ difficultyBtn.forEach((btn) => {
   });
 });
 
+// Set sounds to be muted as default
+
+window.onload = () => {
+  for (const fx of soundFx) {
+    fx.muted = true;
+    fx.pause();
+    muteBtn.innerHTML = `<i class="fa-solid fa-volume-xmark"></i>`;
+  }
+};
+
+// Music Button
 const muteMusic = (e) => {
-  const soundFx = document.querySelectorAll("audio");
   e.target.classList.toggle("active");
   if (e.target.classList.contains("active")) {
     for (const fx of soundFx) {
@@ -197,4 +253,14 @@ const muteMusic = (e) => {
 muteBtn.addEventListener("click", function (e) {
   muteMusic(e);
 });
+
+//Modal Box
+modalBtn.addEventListener("click", function () {
+  modal.style.display = "flex";
+});
+
+closeModal.addEventListener("click", function () {
+  modal.style.display = "none";
+});
+
 cardGenerator();

@@ -8,22 +8,50 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Lives: <span class="playerLivesCount"></span></h1>
-    <h2>Difficulty:</h2>
-    <button name="easy" class="difficulty-btn"><h3>Easy</h3></button>
-    <button name="medium" class="difficulty-btn"><h3>Medium</h3></button>
-    <button name="hard" class="difficulty-btn"><h3>Hard</h3></button>
-    <section></section>
+    <div class="difficulty-section">
+      <h2>Difficulty:</h2>
+      <button name="easy" class="difficulty-btn active"><h3>Easy</h3></button>
 
+      <button name="medium" class="difficulty-btn"><h3>Medium</h3></button>
+
+      <button name="hard" class="difficulty-btn"><h3>Hard</h3></button>
+    </div>
+    <h1>Lives: <span class="playerLivesCount"></span></h1>
+    <!-- Game Board -->
+    <section></section>
+    <!-- Music Section -->
+    <div class="music-section">
+      <h2>Game Music</h2>
+      <button class="mute-music active">
+        <i class="fa-solid fa-volume-xmark"></i>
+      </button>
+      <button class="modalBtn">How to Play</button>
+    </div>
+    <!-- Modal Box -->
+    <div class="modal">
+      <!-- Modal Content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h1>Memory Game</h1>
+        <ol>
+          <li>Select a difficulty to adjust the amount of lives you need.</li>
+          <li>Select two cards to turn them over.</li>
+          <li>Turn over two cards with matching images to create a match.</li>
+          <li>
+            Match all of the cards before your lives run out to win the game.
+          </li>
+          <li>Turn game music on and off with the button at the bottom.</li>
+        </ol>
+        <p></p>
+      </div>
+    </div>
+    <!-- Audio Files -->
     <audio class="correct-sound" src="./Sounds/correct.mp3"></audio>
     <audio class="win-sound" src="./Sounds/win.mp3"></audio>
     <audio class="lose-sound" src="./Sounds/lose.mp3"></audio>
     <audio class="background-music" src="./Sounds/backgroundMusic.mp3"></audio>
-    <h2>Game Music</h2>
-    <button class="mute-music active">
-      <i class="fa-solid fa-volume-xmark"></i>
-    </button>
-    <i class="fa-solid fa-volume-high"></i>
+
+    <!-- Font Awesome -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js"
       integrity="sha512-8pHNiqTlsrRjVD4A/3va++W1sMbUHwWxxRPWNyVlql3T+Hgfd81Qc6FC5WMXDC+tSauxxzp1tgiAvSKFu1qIlA=="
